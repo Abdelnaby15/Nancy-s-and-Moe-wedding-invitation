@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJFswIBd0xFKJhXyY+8nOMb8BtWELvqmFfwqPz+2StexyB8D" crossorigin="anonymous">
+    <!-- Custom CSS -->
+    <style>
+        /* Add your custom styles here */
+        body {
+            padding: 20px;
+        }
+
+        .attendee-list {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <h1 class="text-center">Admin Dashboard</h1>
+    <div class="attendee-list">
+        <!-- Attendee data will be displayed here -->
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Hk/Sp1vu+fsdfifw/J5uCb6JE4kS5bwRj6zELR4UyuksfwzB+skzMSNFyCk3a4v" crossorigin="anonymous">
+</script>
+<!-- Custom JS -->
+<script>
+    // Add your custom JavaScript code here, if needed
+    // You can use fetch API to retrieve data from the server and manipulate DOM to display the data
+    fetch('/attendees')
+        .then(response => response.json())
+        .then(data => {
+            const attendeeList = document.querySelector('.attendee-list');
+            data.forEach(attendee => {
+                const attendeeCard = document.createElement('div');
+                attendeeCard.classList.add('card', 'mb-3');
+                attendeeCard.innerHTML = `
+                        <div class="card-body">
+                            <h5 class="card-title">${attendee.name}</h5>
+                            <p class="card-text"><strong>Email:</strong> ${attendee.email}</p>
+                            <p class="card-text"><strong>Number of Guests:</strong> ${attendee.guests}</p>
+                            <p class="card-text"><strong>Message:</strong> ${attendee.message}</p>
+                        </div>
+                    `;
+                attendeeList.appendChild(attendeeCard);
+            });
+        })
+        .catch(error => console.error('Error fetching data:', error));
+</script>
+</body>
+
+</html>

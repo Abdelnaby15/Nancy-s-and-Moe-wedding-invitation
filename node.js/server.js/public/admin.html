@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-eOJMYsd53ii+scO/bJFswIBd0xFKJhXyY+8nOMb8BtWELvqmFfwqPz+2StexyB8D" crossorigin="anonymous">
+    <!-- Custom CSS -->
+    <style>
+        /* Add your custom styles here */
+        body {
+            padding-top: 20px;
+            font-family: 'Arial', sans-serif;
+            color: white; /* Font color */
+        }
+
+        .header {
+            text-align: center;
+            font-size: 28px;
+            color: #4CAF50; /* Green color */
+            margin-bottom: 20px;
+        }
+
+        .row-style {
+            background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black background */
+            border-radius: 10px; /* Rounded corners */
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .message-box {
+            border-radius: 10px;
+            background-color: #f0f0f0;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 16px; /* Custom font size for messages */
+            font-family: 'Arial', sans-serif; /* Custom font family for messages */
+            color: #333; /* Custom color for messages */
+        }
+
+        /* Style for messages from '/attendance' */
+        .attendance-message {
+            font-size: 18px;
+            color: #007bff; /* Blue color */
+        }
+
+        /* Style for input field */
+        .form-control {
+            font-size: 18px; /* Bigger font size */
+        }
+
+        /* Background image */
+        body {
+            background-image: url('img/Admin\ background/#007bff'); /* Specify the path to your image */
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        Moe & Nancy Wedding Messages
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">Admin Panel</a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+            <!-- Attendee messages will be displayed here -->
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Hk/Sp1vu+fsdfifw/J5uCb6JE4kS5bwRj6zELR4UyuksfwzB+skzMSNFyCk3a4v" crossorigin="anonymous">
+    </script>
+    <!-- Custom JS -->
+    <script>
+        // Add your custom JavaScript code here, if needed
+        // You can use fetch API to retrieve data from the server and manipulate DOM to display the data
+        fetch('/attendees')
+            .then(response => response.json())
+            .then(data => {
+                const messageContainer = document.querySelector('.row');
+                data.forEach(attendee => {
+                    const messageBox = document.createElement('div');
+                    messageBox.classList.add('col');
+                    // Check if message is from '/attendance' and add custom class
+                    const messageClass = attendee.source === '/attendance' ? 'attendance-message' : '';
+                    messageBox.innerHTML = `
+                        <div class="message-box ${messageClass}">
+                            <h5>${attendee.name}</h5>
+                            <p><strong>Email:</strong> ${attendee.email}</p>
+                            <p><strong>Number of Guests:</strong> ${attendee.guests}</p>
+                            <p><strong>Message:</strong> ${attendee.message}</p>
+                        </div>
+                    `;
+                    messageContainer.appendChild(messageBox);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    </script>
+</body>
+
+</html> 
